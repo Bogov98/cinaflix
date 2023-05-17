@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Formulario de inicio de sesión</title>
+</head>
+<body>
+<form action="" method="post">
+    {% csrf_token  %}
+
+    <input type="text" name="username" id="" placeholder="nombre usuario">
+    <br>
+    <input type="password" name ="password" id="" placeholder="contraseña"> 
+    <button type="submit">ingresar</button>
+</form>    
+</body>
+</html>
