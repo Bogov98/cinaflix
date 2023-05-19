@@ -1,0 +1,103 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500;700&display=swap" rel="stylesheet">
+    <link type='text/css' href='{% static "css/menupeliculas.css" %}' rel='stylesheet'/>
+
+    <!-- Slick Carousel CSS and JS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    
+
+    <title>Document</title>
+</head>
+<body>
+  
+    <nav>
+        <img src="./icons/boton-de-play.png" alt="menu" class="menu">
+    
+        <div class="navbar-left">
+
+          <img src="./logos/logo.PNG" alt="logo" class="logo">
+    
+          <ul>
+            <li>
+              <a href="/">todos</a>
+            </li>
+            <li>
+              <a href="/">categorias</a>
+            </li>
+            <li>
+              <a href="/">año</a>
+            </li>
+            <li>
+              <a href="/">etiquetas</a>
+            </li>
+            <li>
+              <a href="/">comentarios</a>
+            </li>
+            <li>
+              <a href="/">otros</a>
+            </li>
+          </ul>
+        </div>
+        <form class="d-flex" role="search">
+          <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn" type="submit">Buscar</button>
+        </form>
+        <div class="navbar-right">
+          <ul>
+            <li class="navbar-email">email@example.com</li>
+            <li class="navbar-shopping-cart">
+              <img src="./icons/boton-de-play.png" alt="shopping cart">
+              <div>2</div>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    
+
+
+      <div> 
+        <section class="main-container"></section>
+        <div class="movie-grid">
+          {%for movie in movies%}
+            <div class="movie-card">
+                <img src= "{{movie.poster_link}}" alt="nombre pelicula 2">
+                <div class="movie-info">
+                    <h2 >{{movie.title}} </h2>
+                    <p >{{movie.release_date}}</p>
+                </div>
+            </div>
+          {%endfor%}
+    
+            
+    
+            <!-- Repite el código de arriba para cada película que quieras mostrar -->
+        </div>
+    
+    </div>
+    </section>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        $('.movie-slider').on('wheel', function(e) {
+            if (e.originalEvent.deltaY > 0) {
+                $(this).scrollLeft($(this).scrollLeft() + 40);
+            } else {
+                $(this).scrollLeft($(this).scrollLeft() - 40);
+            }
+            e.preventDefault();
+        });
+    });
+    </script>
+</body>
+</html>
