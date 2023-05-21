@@ -12,7 +12,6 @@ from .models import Vista
 @login_required
 def home(request):
     movie=Movie.objects.all()[:10]
-    print(movie)
     return render(request,'Home/home.html',{'movie':movie})
 
 
