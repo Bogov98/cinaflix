@@ -67,25 +67,22 @@
 
 
       <div> 
-        <section class="main-container"></section>
-        <div class="movie-grid">
-          {%for movie in movies%}
-            <div class="movie-card">
-                <img src= "{{movie.poster_link}}" alt="nombre pelicula 2">
-                <div class="movie-info">
-                    <h2 >{{movie.title}} </h2>
-                    <p >{{movie.release_date}}</p>
-                </div>
+      <!-- Parte relevante de tu archivo HTML -->
+<section class="main-container">
+  <div class="movie-slider">
+      {% for movie in movies %}
+      <div class="movie-grid">
+          <div class="movie-card">
+            <img src="{{ movie.poster_link }}" alt="{{ movie.title }}">
+            <div class="movie-info">
+              <h2>{{ movie.title }}</h2>
+              <p>{{ movie.release_date }}</p>
             </div>
-          {%endfor%}
-    
-            
-    
-            <!-- Repite el código de arriba para cada película que quieras mostrar -->
-        </div>
-    
-    </div>
-    </section>
+          </div>
+      </div>
+      {% endfor %}
+  </div>
+</section>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script>
     $(document).ready(function() {
