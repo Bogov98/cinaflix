@@ -1,4 +1,13 @@
 from django.db import models
+from django.contrib.auth.models import User
+
+class Usuario(models.Model):
+    idusuario = models.AutoField(primary_key=True)
+    username = models.CharField(max_length=100, unique=True)
+    nombre = models.CharField(max_length=100)
+    apellido = models.CharField(max_length=100)
+    correo = models.CharField(max_length=100)
+
 
 class Movie(models.Model):
     id = models.AutoField(primary_key=True)
@@ -9,7 +18,13 @@ class Movie(models.Model):
     generos = models.CharField(max_length=200)
     poster_link = models.URLField()
 
-    def _str_(self):
+    def str(self):
         return self.title
 
-# Create your models here.
+class Vista(models.Model):
+    idvista = models.AutoField(primary_key=True)
+    idmovie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    idusuario = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'Vista {self.idvista}'        

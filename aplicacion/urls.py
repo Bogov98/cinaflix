@@ -1,7 +1,14 @@
 from django.urls import path
 from . import views
+from django.urls import include
+
 
 urlpatterns = [
-    path('menu/',views.menu,name='menu'),
-    
+    path('', views.home, name='login'),
+    path('salir',views.salir, name='salir'),
+    path('home', views.home, name='home'),
+    path('accounts/',include ('django.contrib.auth.urls')),
+    path('register/', views.register, name='register'),
+    path('views_movie/<int:movie>/',views.views_movie, name='views_movie'),
+
 ]
