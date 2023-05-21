@@ -1,26 +1,30 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import User
 
-class User(AbstractUser):
-    pass # Django ya incluye campos para el manejo de usuarios
+class Usuario(models.Model):
+    idusuario = models.AutoField(primary_key=True)
+    username = models.CharField(max_length=100, unique=True)
+    nombre = models.CharField(max_length=100)
+    apellido = models.CharField(max_length=100)
+    correo = models.CharField(max_length=100)
 
-class Genre(models.Model):
-    name = models.CharField(max_length=100)
 
 class Movie(models.Model):
+    id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=200)
+    vote_average = models.DecimalField(max_digits=3, decimal_places=1)
     release_date = models.DateField()
-    duration_minutes = models.IntegerField()
-    description = models.TextField()
+    imdb_id = models.CharField(max_length=100)
+    generos = models.CharField(max_length=200)
+    poster_link = models.URLField()
 
-class MovieGenre(models.Model):
-    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
-    genre = models.ForeignKey(Genre, on_delete=models.CASCADE)
+    def str(self):
+        return self.title
 
-class UserMovie(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
-    watched = models.BooleanField(default=False)
-    favorite = models.BooleanField(default=False)
+class Vista(models.Model):
+    idvista = models.AutoField(primary_key=True)
+    idmovie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    idusuario = models.ForeignKey(User, on_delete=models.CASCADE)
 
-
+    def __str__(self):
+        return f'Vista {self.idvista}'        

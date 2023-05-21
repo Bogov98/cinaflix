@@ -3,15 +3,38 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout 
 from .forms import CustomUserCreationForm
 from django.contrib.auth.models import User
+from .models import Movie
+from .models import Vista
 
 
 
 # Create your views here.
 @login_required
 def home(request):
-    usuario= request.user
-    print(usuario)
-    return render(request,'Home/home.html')
+    movie=Movie.objects.all()[:10]
+    print(movie)
+    return render(request,'Home/home.html',{'movie':movie})
+
+
+def views_movie(request, movie):
+    movie = Movie.objects.get(id=movie)
+    user = request.user
+    idusuario = user.id
+
+    try:
+        visto=True
+        datos={
+            'movie':movie,
+            'visto':visto
+        }
+        vista = Vista.objects.get(idmovie_id=movie.id, idusuario_id=idusuario)
+        return render(request, 'VerPelicula/views_movie.html', datos)
+    except Vista.DoesNotExist:
+        vistaInsert = Vista(idmovie_id=movie.id, idusuario_id=idusuario)
+        vistaInsert.save()
+        return render(request, 'VerPelicula/views_movie.html', {'movie': movie})
+
+    
 
 def salir(request):
     logout(request)
@@ -43,3 +66,7 @@ def register(request):
         return redirect('/')
 
     return render(request,'registration/register.html')
+
+
+
+    

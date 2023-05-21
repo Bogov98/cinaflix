@@ -1,2 +1,7 @@
 <h3>bienvenido</h3>
+{% for movie in movie %}
+    <h2>{{movie.id}}</h2>
+    <h2>{{movie.title}}</h2>
+    <a href="{% url 'views_movie' movie.id %}">ver</a>
+{% endfor %}    
 <a href="{% url 'salir' %}">salir</a>
