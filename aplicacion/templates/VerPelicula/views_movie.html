@@ -1,5 +1,28 @@
-<h3>ver pelicula</h3>
+
 <h2>{{movie.title}}</h2>
 {% if visto%}
     <h1>Vista</h1>
 {% endif %}    
+{% if comen %}
+    <form action="{% url 'agregar_comentario' movie.id %}" method="POST">
+        {% csrf_token %}
+  
+
+  
+        <div>
+            <label for="comentario">Comentario:</label>
+            <textarea id="comentario" name="comentario" rows="4" required></textarea>
+        </div>
+  
+        <button type="submit">Agregar comentario</button>
+    </form>
+    <h1>comentarios</h1>
+    {% for comentario in comentario%}
+        
+            <h2>{{ comentario.idusuario.username }}</h2>
+            <h3>{{comentario.comentario}}</h3>
+ 
+    {% endfor %}
+ 
+{% endif %}
+  

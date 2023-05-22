@@ -5,6 +5,7 @@ from .forms import CustomUserCreationForm
 from django.contrib.auth.models import User
 from .models import Movie
 from .models import Vista
+from .models import Comentario
 
 
 
@@ -20,20 +21,53 @@ def views_movie(request, movie):
     user = request.user
     idusuario = user.id
 
+    #comentarios
+    comentario= Comentario.objects.filter(idmovie_id=movie).all()
+    usuarios = []
+
+    for comentarios in comentario:
+        usuario = comentarios.idusuario
+        usuarios.append(usuario)
+
     try:
         visto=True
+        comen=True
         datos={
             'movie':movie,
-            'visto':visto
+            'visto':visto,
+            'comentario':comentario,
+            'comen':comen,
+            'usuarios':usuarios
+
         }
         vista = Vista.objects.get(idmovie_id=movie.id, idusuario_id=idusuario)
         return render(request, 'VerPelicula/views_movie.html', datos)
+
+
     except Vista.DoesNotExist:
         vistaInsert = Vista(idmovie_id=movie.id, idusuario_id=idusuario)
         vistaInsert.save()
         return render(request, 'VerPelicula/views_movie.html', {'movie': movie})
 
-    
+def agregar_comentario(request,movie):
+    user = request.user
+    comentario=Comentario(comentario=request.POST['comentario'],idusuario_id=user.id,idmovie_id=movie)
+    comentario.save()
+    movie = Movie.objects.get(id=movie)
+    user = request.user
+    idusuario = user.id
+    comentario= Comentario.objects.filter(idmovie_id=movie).all()
+    visto=True
+    comen=True
+    datos={
+        'movie':movie,
+        'visto':visto,
+        'comentario':comentario,
+        'comen':comen,
+        'user':user
+
+        }
+    return render(request, 'VerPelicula/views_movie.html', datos)
 
 def salir(request):
     logout(request)
