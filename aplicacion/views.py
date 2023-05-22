@@ -47,7 +47,13 @@ def views_movie(request, movie):
     except Vista.DoesNotExist:
         vistaInsert = Vista(idmovie_id=movie.id, idusuario_id=idusuario)
         vistaInsert.save()
-        return render(request, 'VerPelicula/views_movie.html', {'movie': movie})
+        comen=True
+        datos={
+            'comen':comen,
+            'movie': movie
+            
+        }
+        return render(request, 'VerPelicula/views_movie.html', datos)
 
 def agregar_comentario(request,movie):
     user = request.user
