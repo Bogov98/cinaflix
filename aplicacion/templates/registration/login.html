@@ -14,12 +14,12 @@
 <body>
     <body>
         <div class="card mb-3" style="max-width: 540px;"id="form">
-            <img src="../logos/image.png" class="img-fluid rounded-start" alt="Card title">
+            <img src='{% static "imagenes/image.png" %}' class="img-fluid rounded-start" alt="Card title">
               
                 <form action=""  method="post">
                   {% csrf_token  %}
                   <div class="formcontainer">
-                    <img src="../logos/image.png" class="img-fluid rounded-start" alt="Card title"id="logo">
+                    <img src='{% static "imagenes/logo.PNG" %}' class="img-fluid rounded-start" alt="Card title"id="logo">
                     <h2 id="label_correo"></h2>  
                     <input type="text" name="username" id="nombre" placeholder="nombre usuario">
                     <h2 id="label_contrasena"></h2>  
