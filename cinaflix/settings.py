@@ -133,6 +133,9 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     'aplicacion/static/css',
     'aplicacion/static/js',
+    
+    
+    
 ]
 
 # Default primary key field type
