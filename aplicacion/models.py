@@ -25,6 +25,7 @@ class Vista(models.Model):
     idvista = models.AutoField(primary_key=True)
     idmovie = models.ForeignKey(Movie, on_delete=models.CASCADE)
     idusuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    rating = models.IntegerField()
 
     def __str__(self):
         return f'Vista {self.idvista}' 

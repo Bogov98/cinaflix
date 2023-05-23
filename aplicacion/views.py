@@ -46,8 +46,6 @@ def views_movie(request, movie):
 
 
     except Vista.DoesNotExist:
-        vistaInsert = Vista(idmovie_id=movie.id, idusuario_id=idusuario)
-        vistaInsert.save()
         comen=True
         datos={
             'comen':comen,
@@ -55,6 +53,20 @@ def views_movie(request, movie):
             
         }
         return render(request, 'VerPelicula/views_movie.html', datos)
+
+
+def calificar_pelicula(request,movie):
+    user = request.user
+    if request.method == 'POST':
+        calificacion = request.POST.get('calificacion')
+        print(calificacion)
+        calificar=Vista(idmovie_id=movie,idusuario_id=user.id,rating=calificacion)
+        calificar.save() 
+
+        return redirect('views_movie', movie=movie)
+    
+    # Maneja otros métodos de solicitud si es necesario
+    return JsonResponse({'error': 'Método de solicitud no válido.'}, status=400)       
 
 def agregar_comentario(request,movie):
     user = request.user
@@ -98,16 +110,16 @@ def buscar_pelicula(request):
         return render(request, 'Home/homeerror.html', {'error_message': error_message})
 
 
-def favorita_pelicula(request,movie):
+"""def favorita_pelicula(request,movie):
     user = request.user
-    favoritos=Favortio.objects.filter(idusuario_id=user.id).all()
-    if favoritos.idusuario_id=user.id and favoritos.idmovie_id:
+    favoritos=Favortio.objects.filter(idusuario_id=user.id).all() 
+    if favoritos.idusuario_id==user.id and favoritos.idmovie_id==movie:
         favoritos.delete()
     else:    
         favorito=Favorito(idmovie_id=movie,idusuario_id=user.id)
         favorito.save()
         return render(request,'Home/home.html',{'movie':movie})
-    
+   """ 
         
 
 def register(request):
