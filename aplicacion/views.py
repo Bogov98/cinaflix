@@ -25,7 +25,6 @@ def views_movie(request, movie):
     #comentarios
     comentario= Comentario.objects.filter(idmovie_id=movie).all()
     usuarios = []
-
     for comentarios in comentario:
         usuario = comentarios.idusuario
         usuarios.append(usuario)
@@ -33,12 +32,14 @@ def views_movie(request, movie):
     try:
         visto=True
         comen=True
+        calif=True
         datos={
             'movie':movie,
             'visto':visto,
             'comentario':comentario,
             'comen':comen,
-            'usuarios':usuarios
+            'usuarios':usuarios,
+            'calif': calif
 
         }
         vista = Vista.objects.get(idmovie_id=movie.id, idusuario_id=idusuario)
@@ -72,21 +73,8 @@ def agregar_comentario(request,movie):
     user = request.user
     comentario=Comentario(comentario=request.POST['comentario'],idusuario_id=user.id,idmovie_id=movie)
     comentario.save()
-    movie = Movie.objects.get(id=movie)
-    user = request.user
-    idusuario = user.id
-    comentario= Comentario.objects.filter(idmovie_id=movie).all()
-    visto=True
-    comen=True
-    datos={
-        'movie':movie,
-        'visto':visto,
-        'comentario':comentario,
-        'comen':comen,
-        'user':user
-
-        }
-    return render(request, 'VerPelicula/views_movie.html', datos)
+    
+    return redirect('views_movie', movie=movie)
 
 def salir(request):
     logout(request)

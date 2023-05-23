@@ -4,6 +4,9 @@
 {% if visto%}
     <h1>Vista</h1>
 {% endif %}   
+{%if calif%}
+    <h2>calificado</h2>
+{% else %}    
 <h2>rating</h2>
 <form action="{% url 'calificar_pelicula' movie.id %}" method="post">
     {% csrf_token %}
@@ -27,6 +30,7 @@
     
     <button type="submit">Calificar</button>
   </form>
+  {% endif %}
   <script>
     var stars = document.getElementsByName('rating');
     var calificacionInput = document.getElementById('calificacion');
