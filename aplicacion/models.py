@@ -25,6 +25,24 @@ class Vista(models.Model):
     idvista = models.AutoField(primary_key=True)
     idmovie = models.ForeignKey(Movie, on_delete=models.CASCADE)
     idusuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    rating = models.IntegerField()
 
     def __str__(self):
-        return f'Vista {self.idvista}'        
+        return f'Vista {self.idvista}' 
+
+class Comentario(models.Model):
+    idcomentario = models.AutoField(primary_key=True)
+    comentario = models.CharField(max_length=200)
+    idusuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    idmovie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'Comentario {self.idcomentario}'      
+
+class Favorito(models.Model):
+    idfavorito = models.AutoField(primary_key=True)
+    idusuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    idmovie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'Favorito {self.idfavorito}'                 

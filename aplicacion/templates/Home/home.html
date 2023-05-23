@@ -1,3 +1,26 @@
+<<<<<<< HEAD
+<h3>bienvenido</h3>
+<form action="{% url 'buscar_pelicula' %}" method="post">
+    {% csrf_token %}
+    <input type="text" name="pelicula" id="pelicula" placeholder="Buscar...">
+    <button type="submit">Buscar</button>
+</form>
+
+{% if busqueda %}
+    <h2>{{ movie.id }}</h2>
+    <h2>{{ movie.title }}</h2>
+    <a href="{% url 'views_movie' movie.id %}">ver</a>
+{% else %}
+    {% for movie in movie %}
+        <h2>{{ movie.id }}</h2>
+        <h2>{{ movie.title }}</h2>
+        <a href="{% url 'views_movie' movie.id %}">ver</a>
+        <a href="#">añadir a favoritos</a>
+    {% endfor %}
+{% endif %}
+
+<a href="{% url 'salir' %}">salir</a>
+=======
  
 
 
@@ -103,3 +126,4 @@
     </script>
 </body>
 </html>
+>>>>>>> main

@@ -1,0 +1,14 @@
+<h3>bienvenido</h3>
+<form action="{% url 'buscar_pelicula' %}" method="post">
+    {% csrf_token %}
+    <input type="text" name="pelicula" id="pelicula" placeholder="Buscar...">
+    <button type="submit">Buscar</button>
+</form>
+
+
+
+<p>{{ error_message }}</p>
+
+
+
+<a href="{% url 'salir' %}">salir</a>
