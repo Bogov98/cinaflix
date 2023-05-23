@@ -21,11 +21,12 @@
                   <div class="formcontainer">
                     <img src="logo.PNG" class="img-fluid rounded-start" alt="Card title"id="logo">
                     <h2 id="label_correo"></h2>  
-                    <input type="text" name="username" id="" placeholder="nombre usuario">
+                    <input type="text" name="username" id="nombre" placeholder="nombre usuario">
                     <h2 id="label_contrasena"></h2>  
-                    <input type="password" name ="password" id="" placeholder="contraseña"> 
-                    <button type="submit">ingresar</button>
-                    <a href="{% url 'register' %}">Registrarse</a>
+                    <input type="password" name ="password" id="contrasena" placeholder="contraseña"> 
+                    <button type="submit" id="btn_ingresar">ingresar</button>
+                    <button class="primary-button create-button"><h3>No tienes Cuenta?<a href="{% url 'register' %}" class="">Registrarse</a></h3></button>
+                    
                   </div>
                   </form> 
                

@@ -1,0 +1,51 @@
+:root {
+    --text-imput-field: #3f46be;
+    --very-ligt-pink: #7c7c84;
+  }
+  
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #000; 
+    
+  }
+  
+  h2 {
+    color: var(--very-ligt-pink);
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--very-ligt-pink);
+    font-size: 14px; /* Tamaño de fuente más pequeño */
+    text-align: center; /* Centrado del texto */
+  }
+  input[type="text"],
+  input[type="email"],
+  input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--text-imput-field);
+    border-radius: 5px;
+    
+  }
+  
+  button[type="submit"] {
+    padding: 10px 20px;
+    background-color: var(--text-imput-field);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #2d328f;
+  }
+ 
