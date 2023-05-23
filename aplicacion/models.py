@@ -1,12 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-class Usuario(models.Model):
-    idusuario = models.AutoField(primary_key=True)
-    username = models.CharField(max_length=100, unique=True)
-    nombre = models.CharField(max_length=100)
-    apellido = models.CharField(max_length=100)
-    correo = models.CharField(max_length=100)
 
 
 class Movie(models.Model):
