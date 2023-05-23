@@ -17,16 +17,16 @@
     <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
     
 
-    <title>Document</title>
+    <title>menu</menu></title>
 </head>
 <body>
   
     <nav>
-        <img src="./icons/boton-de-play.png" alt="menu" class="menu">
+        <img src='{%static"imagenes/boton-de-play" %}' alt="menu" class="menu">
     
         <div class="navbar-left">
 
-          <img src="./logos/logo.PNG" alt="logo" class="logo">
+          <img src='{%static"imagenes/logo.PNG"%}' alt="logo" class="logo">
     
           <ul>
             <li>
@@ -45,9 +45,10 @@
               <a href="/">comentarios</a>
             </li>
             <li>
-              <a href="/">otros</a>
+              
             </li>
           </ul>
+          
         </div>
         <form class="d-flex" role="search">
           <input class="form-control" type="search" placeholder="Search" aria-label="Search">
@@ -57,8 +58,8 @@
           <ul>
             <li class="navbar-email">email@example.com</li>
             <li class="navbar-shopping-cart">
-              <img src="./icons/boton-de-play.png" alt="shopping cart">
-              <div>2</div>
+              <img src='{%static"icons/boton-de-play.png"%}' alt="shopping cart">
+            
             </li>
           </ul>
         </div>
@@ -67,7 +68,7 @@
 
 
       <div> 
-      <!-- Parte relevante de tu archivo HTML -->
+      
 <section class="main-container">
   <div class="movie-slider">
       {% for movie in movies %}
@@ -77,6 +78,8 @@
             <div class="movie-info">
               <h2>{{ movie.title }}</h2>
               <p>{{ movie.release_date }}</p>
+              <a href="/views_movie/5/" class="button button-primary">Ver</a>
+
             </div>
           </div>
       </div>

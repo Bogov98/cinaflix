@@ -13,7 +13,13 @@ from .models import Favorito
 # Create your views here.
 @login_required
 def home(request):
+    user=request.user
     movie=Movie.objects.all()[:10]
+    datos={
+        'user':user,
+        'movie':movie
+    }
+
     return render(request,'Home/home.html',{'movie':movie})
 
 
