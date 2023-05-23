@@ -36,4 +36,12 @@ class Comentario(models.Model):
     idmovie = models.ForeignKey(Movie, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'Comentario {self.idcomentario}'               
+        return f'Comentario {self.idcomentario}'      
+
+class Favorito(models.Model):
+    idfavorito = models.AutoField(primary_key=True)
+    idusuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    idmovie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'Favorito {self.idfavorito}'                 

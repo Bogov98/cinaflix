@@ -11,5 +11,7 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('views_movie/<int:movie>/',views.views_movie, name='views_movie'),
     path('agregar_comentario/<int:movie>/',views.agregar_comentario, name='agregar_comentario'),
+    path('buscar_pelicula/',views.buscar_pelicula, name='buscar_pelicula'),
+     path('favorita_pelicula/<int:movie>/',views.favorita_pelicula, name='favorita_pelicula'),
 
 ]

@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from .models import Movie
 from .models import Vista
 from .models import Comentario
+from .models import Favorito
 
 
 
@@ -80,7 +81,34 @@ def salir(request):
     return redirect('/')
 
     
+def buscar_pelicula(request):
+    movie = Movie.objects.filter(title=request.POST['pelicula']).first()
+    try:
+        if movie:
+            busqueda = True
+            datos = {
+                'movie': movie,
+                'busqueda': busqueda
+            }
+            return render(request, 'Home/home.html', datos)
+        else:
+            raise Movie.DoesNotExist
+    except Movie.DoesNotExist:
+        error_message = 'No se encontró ninguna película con ese título.'
+        return render(request, 'Home/homeerror.html', {'error_message': error_message})
 
+
+def favorita_pelicula(request,movie):
+    user = request.user
+    favoritos=Favortio.objects.filter(idusuario_id=user.id).all()
+    if favoritos.idusuario_id=user.id and favoritos.idmovie_id:
+        favoritos.delete()
+    else:    
+        favorito=Favorito(idmovie_id=movie,idusuario_id=user.id)
+        favorito.save()
+        return render(request,'Home/home.html',{'movie':movie})
+    
+        
 
 def register(request):
     if request.method == 'POST':
