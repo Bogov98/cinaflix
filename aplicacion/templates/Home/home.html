@@ -61,6 +61,24 @@
       </nav>
       <div> 
       <!-- Parte relevante de tu archivo HTML -->
+
+<section class="main-container">
+    {% for movie in movies_recomended %}
+    <div class="movie-grid">
+        <div class="movie-card">
+          <img src="{{ movie.poster_link }}" alt="{{ movie.title }}">
+          <div class="movie-info">
+            <h2>{{ movie.title }}</h2>
+            <p>{{ movie.release_date }}</p>
+            <a href="{% url 'views_movie' movie.id %}" class="button button-primary">ver</a>  
+          </div>
+          
+        </div>
+        
+    </div>
+    {% endfor %}
+  </div>
+</section>
       
 <section class="main-container">
   
