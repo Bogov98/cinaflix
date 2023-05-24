@@ -12,6 +12,7 @@ from .models import Favorito
 import pandas as pd
 import scipy as sp
 from sklearn.metrics.pairwise import cosine_similarity
+import numpy as np
 
 def top_movies(title):
     count=1
@@ -54,10 +55,11 @@ def get_data_model():
     movies = Movie.objects.values()
     views = Vista.objects.values()
 
-    df_movies = pd.DataFrame(all_movies)
-    df_views = pd.DataFrame(all_views)
-
-    df = df_views.merge(df_movies, left_on='id',right_on='idmovie_id')
+    df_movies = pd.DataFrame(movies)
+    df_views = pd.DataFrame(views)
+    print(df_movies.columns)
+    print(df_views.columns)
+    df = df_views.merge(df_movies, left_on='idmovie_id',right_on='id')
     df = df[['idusuario_id','idmovie_id','rating','title']]
 
     data_model = df.pivot_table(index='idusuario_id', columns='idmovie_id',values='rating',aggfunc=np.mean)
@@ -85,8 +87,9 @@ def home(request):
 
     user_similarity_df, movies_similarity_df, user_movie_df = get_data_model()
     ids_recomended_movies = recommend_movies(user.id, user_similarity_df, user_movie_df)
-    movies_recomended = Movie.objects.filter(pk__in=ids_recomended_movies[:15])
-
+    movies_recomended = Movie.objects.filter(pk__in=list(ids_recomended_movies)[:15])
+    print(len(movies_recomended))
+    print(ids_recomended_movies)
     datos={
         'user':user,
         'movie':movie,
