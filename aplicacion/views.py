@@ -16,8 +16,8 @@ import numpy as np
 
 def top_movies(movie_id, movies_similarity_df):
     if movie_id in movies_similarity_df.columns:
-        movies_similarity_df[movie_id].sort_values(ascending=False).index[1:4]
-    else
+        return movies_similarity_df[movie_id].sort_values(ascending=False).index[1:4]  
+    else:
         return []
 
 
@@ -113,6 +113,7 @@ def views_movie(request, movie):
     #modelo
     user_similarity_df, movies_similarity_df, user_movie_df = get_data_model()
     ids_recomended_movies = top_movies(movie.id,movies_similarity_df)
+    print(ids_recomended_movies)
     movies_recomended = Movie.objects.filter(pk__in=list(ids_recomended_movies)[:15])
 
     try:
