@@ -14,12 +14,11 @@ import scipy as sp
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 
-def top_movies(title):
-    count=1
-    print('peliculas similares {} son:'.format(title))
-    for movie in movies_similarity_df.sort_values(by=title,ascending=False).index[1:4]:
-        print('no. {}: {}'.format(count, movie))
-        count+=1
+def top_movies(movie_id, movies_similarity_df):
+    if movie_id in movies_similarity_df.columns:
+        movies_similarity_df[movie_id].sort_values(ascending=False).index[1:4]
+    else
+        return []
 
 
 def top_users(user, user_similarity_df):
@@ -111,6 +110,11 @@ def views_movie(request, movie):
         usuario = comentarios.idusuario
         usuarios.append(usuario)
 
+    #modelo
+    user_similarity_df, movies_similarity_df, user_movie_df = get_data_model()
+    ids_recomended_movies = top_movies(movie.id,movies_similarity_df)
+    movies_recomended = Movie.objects.filter(pk__in=list(ids_recomended_movies)[:15])
+
     try:
         visto=True
         comen=True
@@ -121,7 +125,8 @@ def views_movie(request, movie):
             'comentario':comentario,
             'comen':comen,
             'usuarios':usuarios,
-            'calif': calif
+            'calif': calif,
+            'movies_recomended': movies_recomended
 
         }
         vista = Vista.objects.get(idmovie_id=movie.id, idusuario_id=idusuario)
@@ -132,7 +137,8 @@ def views_movie(request, movie):
         comen=True
         datos={
             'comen':comen,
-            'movie': movie
+            'movie': movie,
+            'movies_recomended': movies_recomended
             
         }
         return render(request, 'VerPelicula/views_movie.html', datos)
