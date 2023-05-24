@@ -1,7 +1,33 @@
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{% load static %}
 
-<h2>{{movie.title}}</h2>
-{% if visto%}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vista de Película</title>
+  <link type='text/css' href='{% static "css/vista.css" %}' rel='stylesheet'/>
+</head>
+<body>
+  <header>
+    <h1>{{movie.title}}</h1>
+  </header>
+
+  <main>
+    <div class="movie-view">
+      <div class="movie-poster">
+        <img src="{{ movie.poster_link }}"  alt="Poster de la película">
+      </div>
+      <div class="movie-details">
+        <h2>{{movie.title}}</h2>
+        <p>Género: {{movie.generos}}</p>
+        <p>Fecha de Lanzamiento: {{movie.release_date}}</p>
+        <p>Duración: 120 minutos</p>
+        <p>Calificación de los criticos: {{movie.vote_average}}</p>       
+      </div>
+      
+    </div>
+    {% if visto%}
     <h1>Vista</h1>
 {% endif %}   
 {%if calif%}
@@ -53,7 +79,7 @@
             <textarea id="comentario" name="comentario" rows="4" required></textarea>
         </div>
   
-        <button type="submit">Agregar comentario</button>
+        <button type="submit">{Agregar comentario}</button>
     </form>
     <h1>comentarios</h1>
     {% for comentario in comentario%}
@@ -64,4 +90,9 @@
     {% endfor %}
  
 {% endif %}
+  </main>
+</body>
+</html>
+
+
   
