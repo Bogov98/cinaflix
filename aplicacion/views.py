@@ -7,6 +7,7 @@ from .models import Movie
 from .models import Vista
 from .models import Comentario
 from .models import Favorito
+import random
 
 # pandas
 import pandas as pd
@@ -56,8 +57,6 @@ def get_data_model():
 
     df_movies = pd.DataFrame(movies)
     df_views = pd.DataFrame(views)
-    print(df_movies.columns)
-    print(df_views.columns)
     df = df_views.merge(df_movies, left_on='idmovie_id',right_on='id')
     df = df[['idusuario_id','idmovie_id','rating','title']]
 
@@ -79,22 +78,11 @@ def get_data_model():
 
 
 # Create your views here.
-@login_required
+"""@login_required
 def home(request):
-<<<<<<< HEAD
     user = request.user
     movies = Movie.objects.all()[:10]
     favoritos = Favorito.objects.filter(idusuario_id=user.id).values_list('idmovie_id', flat=True)# flat minimiza la busqeuda extrayendo solo el valor en vez de una lista
-
-    datos = {
-        'user': user,
-        'movies': movies,
-        'favoritos': favoritos,
-    }
-
-    return render(request, 'Home/home.html', datos)
-=======
-    user=request.user
     movie=Movie.objects.all()[:10]
 
     user_similarity_df, movies_similarity_df, user_movie_df = get_data_model()
@@ -105,11 +93,38 @@ def home(request):
     datos={
         'user':user,
         'movie':movie,
-        'movies_recomended': movies_recomended
+        'movies_recomended': movies_recomended,
+        'favoritos': favoritos,
+    }
+
+    return render(request,'Home/home.html', datos)"""
+@login_required
+def home(request):
+    user=request.user
+    movie=Movie.objects.all()[:10]
+    favoritos = Favorito.objects.filter(idusuario_id=user.id).values_list('idmovie_id', flat=True)# flat minimiza la busqeuda extrayendo solo el valor en vez de una lista
+    user_similarity_df, movies_similarity_df, user_movie_df = get_data_model()
+    ids_recomended_movies = recommend_movies(user.id, user_similarity_df, user_movie_df)
+    movies_recomended = Movie.objects.filter(pk__in=list(ids_recomended_movies)[:15])
+    adventure_movies = Movie.objects.filter(generos='adventure')
+    random_adventure = random.sample(list(adventure_movies), 15)#devuelve 15 peliculas en orden aleatorio
+    drama_movies = Movie.objects.filter(generos='drama')
+    random_drama = random.sample(list(drama_movies), 15)
+    comedy_movies = Movie.objects.filter(generos='Comedy')
+    random_comedy = random.sample(list(comedy_movies), 15)
+    datos={
+        'user':user,
+        'movie':movie,
+        'movies_recomended': movies_recomended,
+        'favoritos': favoritos,
+        'random_adventure':random_adventure,
+        'random_drama':random_drama,
+        'random_comedy':random_comedy,
+        
     }
 
     return render(request,'Home/home.html', datos)
->>>>>>> 2a2c4fddc07cbb63abbc6ef27777d4c34b5b7fa6
+
 
 
 def views_movie(request, movie):
@@ -142,11 +157,8 @@ def views_movie(request, movie):
             'comen':comen,
             'usuarios':usuarios,
             'calif': calif,
-<<<<<<< HEAD
-            'favoritos':favoritos
-=======
+            'favoritos':favoritos,
             'movies_recomended': movies_recomended
->>>>>>> 2a2c4fddc07cbb63abbc6ef27777d4c34b5b7fa6
 
         }
         vista = Vista.objects.get(idmovie_id=movie.id, idusuario_id=idusuario)
@@ -155,16 +167,13 @@ def views_movie(request, movie):
 
     except Vista.DoesNotExist:
   
-        datos={
-<<<<<<< HEAD
-           
+        datos={         
             'movie': movie,
-            'favoritos':favoritos
-=======
+            'favoritos':favoritos,
             'comen':comen,
             'movie': movie,
             'movies_recomended': movies_recomended
->>>>>>> 2a2c4fddc07cbb63abbc6ef27777d4c34b5b7fa6
+
             
         }
         return render(request, 'VerPelicula/views_movie.html', datos)

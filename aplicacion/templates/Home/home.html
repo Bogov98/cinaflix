@@ -1,5 +1,3 @@
-
-
 {% load static %}
 
 <!DOCTYPE html>
@@ -23,45 +21,112 @@
 </head>
 <body>
   
-    <nav>
-        <img src='{% static "imagenes/logo.PNG" %}' alt="menu" class="menu">
-    
-        <div class="navbar-left">
+  <nav>
+    <img src='{% static "imagenes/logo.PNG" %}' alt="menu" class="menu">
 
-          <img src='{% static "imagenes/logo.PNG" %}' alt="shopping cart">
-    
-          <ul>
-            <li>
-              <a href="/">todos</a>
-            </li>
-            <li>
-              <a href="{% url 'vista_favoritos' %}">Favoritas</a>
-            </li>
-            <li>
-              <a href="{% url 'salir' %}"class="salir">salir</a>
-            </li>
-            
-          </ul>
-        </div>
-        <form class="d-flex" action="{% url 'buscar_pelicula' %}" role="search" method="post">
-          {% csrf_token %}
-          <input class="form-control" name="pelicula" id="pelicula" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn" type="submit">Buscar</button>
-        </form>
-       
-        <div class="navbar-right">
-          <ul>
-            <li class="navbar-email"><h2>Bienvenido  {{user.username}}</h2></li>
-            <li class="navbar-shopping-cart">
-              <img src='{% static "imagenes/boton-de-play.png" %}' alt="shopping cart">
-             
-            </li>
-          </ul>
-        </div>
-      </nav>
+    <div class="navbar-left">
+
+      <img src='{% static "imagenes/logo.PNG" %}' alt="shopping cart">
+
+      <ul>
+        <li>
+          <a href="/">todos</a>
+        </li>
+        <li>
+          <a href="{% url 'vista_favoritos' %}">Favoritas</a>
+        </li>
+        <li>
+          <a href="{% url 'salir' %}"class="salir">salir</a>
+        </li>
+        
+      </ul>
+    </div>
+    <form class="d-flex" action="{% url 'buscar_pelicula' %}" role="search" method="post">
+      {% csrf_token %}
+      <input class="form-control" name="pelicula" id="pelicula" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn" type="submit">Buscar</button>
+    </form>
+   
+    <div class="navbar-right">
+      <ul>
+        <li class="navbar-email"><h2>Bienvenido  {{user.username}}</h2></li>
+        <li class="navbar-shopping-cart">
+          <img src='{% static "imagenes/boton-de-play.png" %}' alt="shopping cart">
+         
+        </li>
+      </ul>
+    </div>
+  </nav>
       <div> 
       <!-- Parte relevante de tu archivo HTML -->
 
+<h1>adventure</h1>
+<section class="main-container">
+{% for random_adventure1 in random_adventure %}
+  <div class="movie-grid">
+      <div class="movie-card">
+        <img src="{{ random_adventure1.poster_link }}" alt="{{ movie.title }}">
+        <div class="movie-info">
+          <h2>{{ random_adventure1.title }}</h2>
+          <p>{{ random_adventure1.release_date }}</p>
+          <a href="{% url 'views_movie' random_adventure1.id %}" class="button button-primary">ver</a>  
+          {% if random_adventure1.id in favoritos %}
+            <a href="{% url 'favorita_pelicula' random_adventure1.id %}" class="button button-primary">Quitar</a>
+          {% else %}
+            <a href="{% url 'favorita_pelicula' random_adventure1.id %}" class="button button-primary">Añadir</a>
+          {% endif %}
+        </div>
+       
+      </div>
+      
+  </div>
+  {% endfor %}
+</section>
+<h1>Drama</h1>
+<section class="main-container">
+{% for random_drama1 in random_drama %}
+  <div class="movie-grid">
+      <div class="movie-card">
+        <img src="{{ random_drama1.poster_link }}" alt="{{ movie.title }}">
+        <div class="movie-info">
+          <h2>{{ random_drama1.title }}</h2>
+          <p>{{ random_drama1.release_date }}</p>
+          <a href="{% url 'views_movie' random_drama1.id %}" class="button button-primary">ver</a>  
+          {% if random_drama1.id in favoritos %}
+            <a href="{% url 'favorita_pelicula' random_drama1.id %}" class="button button-primary">Quitar</a>
+          {% else %}
+            <a href="{% url 'favorita_pelicula' random_drama1.id %}" class="button button-primary">Añadir</a>
+          {% endif %}
+        </div>
+       
+      </div>
+      
+  </div>
+  {% endfor %}
+
+  <h1>Comedia</h1>
+<section class="main-container">
+{% for random_comedy1 in random_comedy %}
+  <div class="movie-grid">
+      <div class="movie-card">
+        <img src="{{ random_comedy1.poster_link }}" alt="{{ movie.title }}">
+        <div class="movie-info">
+          <h2>{{ random_comedy1.title }}</h2>
+          <p>{{ random_comedy1.release_date }}</p>
+          <a href="{% url 'views_movie' random_comedy1.id %}" class="button button-primary">ver</a>  
+          {% if random_comedy1.id in favoritos %}
+            <a href="{% url 'favorita_pelicula' random_comedy1.id %}" class="button button-primary">Quitar</a>
+          {% else %}
+            <a href="{% url 'favorita_pelicula' random_comedy1.id %}" class="button button-primary">Añadir</a>
+          {% endif %}
+        </div>
+       
+      </div>
+      
+  </div>
+  {% endfor %}
+</section>
+<h1>Recomendados</h1>
 <section class="main-container">
     {% for movie in movies_recomended %}
     <div class="movie-grid">
@@ -70,7 +135,12 @@
           <div class="movie-info">
             <h2>{{ movie.title }}</h2>
             <p>{{ movie.release_date }}</p>
-            <a href="{% url 'views_movie' movie.id %}" class="button button-primary">ver</a>  
+            <a href="{% url 'views_movie' movie.id %}" class="button button-primary">ver</a> 
+            {% if movie.id in favoritos %}
+            <a href="{% url 'favorita_pelicula' movie.id %}" class="button button-primary">Quitar</a>
+            {% else %}
+            <a href="{% url 'favorita_pelicula' movie.id %}" class="button button-primary">Añadir</a>
+            {% endif %}  
           </div>
           
         </div>
@@ -78,8 +148,7 @@
     </div>
     {% endfor %}
   </div>
-</section>
-      
+</section>      
 <section class="main-container">
   
   <div class="movie-slider">
@@ -90,33 +159,36 @@
         <div class="movie-info">
           <h2>{{ movie.title }}</h2>
           <p>{{ movie.release_date }}</p>
-          <a href="{% url 'views_movie' movie.id %}" class="button button-primary">ver</a>
+          <a href="{% url 'views_movie' movie.id %}">ver</a>
           {% if movie.id in favoritos %}
           <a href="{% url 'favorita_pelicula' movie.id %}" class="button button-primary">Quitar</a>
           {% else %}
           <a href="{% url 'favorita_pelicula' movie.id %}" class="button button-primary">Añadir</a>
-          {% endif %}
+          {% endif %}  
         </div>
       </div>
   </div>
     {% else %}
-    {% for movie in movies %}
-    <div class="movie-grid">
-        <div class="movie-card">
+
+      {% for movie in movie %}
+      <div class="movie-grid">
+          <div class="movie-card">
             <img src="{{ movie.poster_link }}" alt="{{ movie.title }}">
             <div class="movie-info">
-                <h2>{{ movie.title }}</h2>
-                <p>{{ movie.release_date }}</p>
-                <a href="{% url 'views_movie' movie.id %}" class="button button-primary">ver</a>
-                {% if movie.id in favoritos %}
+              <h2>{{ movie.title }}</h2>
+              <p>{{ movie.release_date }}</p>
+              <a href="{% url 'views_movie' movie.id %}" class="button button-primary">ver</a>  
+              {% if movie.id in favoritos %}
                 <a href="{% url 'favorita_pelicula' movie.id %}" class="button button-primary">Quitar</a>
-                {% else %}
+              {% else %}
                 <a href="{% url 'favorita_pelicula' movie.id %}" class="button button-primary">Añadir</a>
-                {% endif %}
+              {% endif %}
             </div>
-        </div>
-    </div>
-    {% endfor %}
+           
+          </div>
+          
+      </div>
+      {% endfor %}
       
       {% endif %}
   </div>
