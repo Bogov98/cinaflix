@@ -11,7 +11,6 @@
 <body>
   <header>
     <h1>{{movie.title}}</h1>
-    <a href="{% url 'home' %}" class="btn-back">Ir a Home</a>
   </header>
 
   <main>
@@ -24,7 +23,29 @@
         <p>Género: {{movie.generos}}</p>
         <p>Fecha de Lanzamiento: {{movie.release_date}}</p>
         <p>Duración: 120 minutos</p>
-        <p>Calificación de los criticos: {{movie.vote_average}}</p>       
+        <p>Calificación de los criticos: {{movie.vote_average}}</p>   
+        
+        
+        <section class="main-container">
+          {% for movie in movies_recomended %}
+          <div class="movie-grid">
+              <div class="movie-card">
+                <img src="{{ movie.poster_link }}" alt="{{ movie.title }}">
+                <div class="movie-info">
+                  <h2>{{ movie.title }}</h2>
+                  <p>{{ movie.release_date }}</p>
+                  <a href="{% url 'views_movie' movie.id %}" class="button-ver">ver</a>  
+                </div>
+                
+              </div>
+              
+          </div>
+          {% endfor %}
+        </div>
+      </section>
+        
+      
+
       </div>
       
     </div>
@@ -55,27 +76,41 @@
     
     <input type="hidden" name="calificacion" id="calificacion" value="" />
     
-    <button type="submit">Calificar</button>
+    <button type="submit" class="califi">Calificar</button>
   </form>
   {% endif %}
 
-  <section class="main-container">
-    {% for movie in movies_recomended %}
-    <div class="movie-grid">
-        <div class="movie-card">
-          <img src="{{ movie.poster_link }}" alt="{{ movie.title }}">
-          <div class="movie-info">
-            <h2>{{ movie.title }}</h2>
-            <p>{{ movie.release_date }}</p>
-            <a href="{% url 'views_movie' movie.id %}" class="button button-primary">ver</a>  
-          </div>
-          
-        </div>
-        
-    </div>
-    {% endfor %}
-  </div>
-</section>
+  {% if comen %}
+  <form action="{% url 'agregar_comentario' movie.id %}" method="POST">
+      {% csrf_token %}
+
+
+
+      <div>
+          <label for="comentario">Comentario:</label>
+          <textarea id="comentario" name="comentario" rows="4" required></textarea>
+      </div>
+
+
+      <button type="submit">Agregar comentario</button>
+      {% if movie.id in favoritos %}
+    <a href="{% url 'favorita_pelicula_vista' movie.id %}" class="button button-primary">Quitar</a>
+{% else %}
+    <a href="{% url 'favorita_pelicula_vista' movie.id %}" class="button button-primary">Añadir</a>
+{% endif %}
+  </form>
+  <h1>comentarios</h1>
+  {% for comentario in comentario%}
+      
+          <h2>{{ comentario.idusuario.username }}</h2>
+          <h3>{{comentario.comentario}}</h3>
+
+
+  {% endfor %}
+  {%else%}
+  <h3>Para comentar tienes que calficar la pelicula </h3>
+
+{% endif %}
 
   <script>
     var stars = document.getElementsByName('rating');
@@ -87,35 +122,10 @@
       });
     }
   </script>
-{% if movie.id in favoritos %}
-    <a href="{% url 'favorita_pelicula_vista' movie.id %}" class="button button-primary">Quitar</a>
-{% else %}
-    <a href="{% url 'favorita_pelicula_vista' movie.id %}" class="button button-primary">Añadir</a>
-{% endif %}
-{% if comen %}
-    <form action="{% url 'agregar_comentario' movie.id %}" method="POST">
-        {% csrf_token %}
-        <div>
-            <label for="comentario">Comentario:</label>
-            <textarea id="comentario" name="comentario" rows="4" required></textarea>
-        </div>
   
-        <button type="submit">{Agregar comentario}</button>
-    </form>
-    <h1>comentarios</h1>
-    {% for comentario in comentario%}
-        
-            <h2>{{ comentario.idusuario.username }}</h2>
-            <h3>{{comentario.comentario}}</h3>
- 
-    {% endfor %}
-    {%else%}
-    <h3>Para comentar tienes que calficar la pelicula </h3>
- 
-{% endif %}
+
   </main>
 </body>
 </html>
-
 
   

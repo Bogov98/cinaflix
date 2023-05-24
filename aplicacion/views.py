@@ -170,7 +170,7 @@ def views_movie(request, movie):
         datos={         
             'movie': movie,
             'favoritos':favoritos,
-            'comen':comen,
+
             'movie': movie,
             'movies_recomended': movies_recomended
 
