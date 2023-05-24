@@ -1,0 +1,31 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Añadir a Favoritos</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+  <link type='text/css' href='{% static "css/favoritos.css" %}' rel='stylesheet'/>
+
+</head>
+<body>
+  <div class="container">
+    <h2>Películas Favoritas</h2>
+    {% for movies in movies%}
+    <div class="movie">
+      <img src="{{ movies.poster_link }}" alt="Movie Poster">
+      <h2>{{movies.title}}</h2>
+      <a href="{% url 'views_movie' movies.id %}" class="btn-delete">Ver</a>      
+      <a href="{% url 'quitar_favoritos' movies.id %}" class="btn-delete">Eliminar</a>
+
+    </div>
+    {%endfor%}
+
+
+    <a href="{% url 'home' %}" class="btn-back">Ir a Home</a>
+  </div>
+</body>
+</html>

@@ -11,6 +11,7 @@
 <body>
   <header>
     <h1>{{movie.title}}</h1>
+    <a href="{% url 'home' %}" class="btn-back">Ir a Home</a>
   </header>
 
   <main>
@@ -67,13 +68,14 @@
       });
     }
   </script>
-  
+{% if movie.id in favoritos %}
+    <a href="{% url 'favorita_pelicula_vista' movie.id %}" class="button button-primary">Quitar</a>
+{% else %}
+    <a href="{% url 'favorita_pelicula_vista' movie.id %}" class="button button-primary">Añadir</a>
+{% endif %}
 {% if comen %}
     <form action="{% url 'agregar_comentario' movie.id %}" method="POST">
         {% csrf_token %}
-  
-
-  
         <div>
             <label for="comentario">Comentario:</label>
             <textarea id="comentario" name="comentario" rows="4" required></textarea>
@@ -88,6 +90,8 @@
             <h3>{{comentario.comentario}}</h3>
  
     {% endfor %}
+    {%else%}
+    <h3>Para comentar tienes que calficar la pelicula </h3>
  
 {% endif %}
   </main>

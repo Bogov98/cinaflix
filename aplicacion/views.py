@@ -13,14 +13,17 @@ from .models import Favorito
 # Create your views here.
 @login_required
 def home(request):
-    user=request.user
-    movie=Movie.objects.all()[:10]
-    datos={
-        'user':user,
-        'movie':movie
+    user = request.user
+    movies = Movie.objects.all()[:10]
+    favoritos = Favorito.objects.filter(idusuario_id=user.id).values_list('idmovie_id', flat=True)# flat minimiza la busqeuda extrayendo solo el valor en vez de una lista
+
+    datos = {
+        'user': user,
+        'movies': movies,
+        'favoritos': favoritos,
     }
 
-    return render(request,'Home/home.html',{'movie':movie})
+    return render(request, 'Home/home.html', datos)
 
 
 def views_movie(request, movie):
@@ -30,6 +33,7 @@ def views_movie(request, movie):
 
     #comentarios
     comentario= Comentario.objects.filter(idmovie_id=movie).all()
+    favoritos = Favorito.objects.filter(idusuario_id=user.id).values_list('idmovie_id', flat=True)
     usuarios = []
     for comentarios in comentario:
         usuario = comentarios.idusuario
@@ -45,7 +49,8 @@ def views_movie(request, movie):
             'comentario':comentario,
             'comen':comen,
             'usuarios':usuarios,
-            'calif': calif
+            'calif': calif,
+            'favoritos':favoritos
 
         }
         vista = Vista.objects.get(idmovie_id=movie.id, idusuario_id=idusuario)
@@ -53,10 +58,11 @@ def views_movie(request, movie):
 
 
     except Vista.DoesNotExist:
-        comen=True
+  
         datos={
-            'comen':comen,
-            'movie': movie
+           
+            'movie': movie,
+            'favoritos':favoritos
             
         }
         return render(request, 'VerPelicula/views_movie.html', datos)
@@ -72,7 +78,6 @@ def calificar_pelicula(request,movie):
 
         return redirect('views_movie', movie=movie)
     
-    # Maneja otros métodos de solicitud si es necesario
     return JsonResponse({'error': 'Método de solicitud no válido.'}, status=400)       
 
 def agregar_comentario(request,movie):
@@ -104,16 +109,46 @@ def buscar_pelicula(request):
         return render(request, 'Home/homeerror.html', {'error_message': error_message})
 
 
-"""def favorita_pelicula(request,movie):
+def vista_favoritos(request):
     user = request.user
-    favoritos=Favortio.objects.filter(idusuario_id=user.id).all() 
-    if favoritos.idusuario_id==user.id and favoritos.idmovie_id==movie:
+    favoritos = Favorito.objects.filter(idusuario_id=user.id).all()
+    movies = []
+    for favorito in favoritos:
+        movie = Movie.objects.get(id=favorito.idmovie_id)
+        movies.append(movie)
+    return render(request, 'Favoritos/favoritos.html', {'movies': movies})
+
+def quitar_favoritos(request,movie):
+    user = request.user
+    favoritos = Favorito.objects.filter(idusuario_id=user.id, idmovie_id=movie)
+
+    if favoritos.exists():
         favoritos.delete()
-    else:    
-        favorito=Favorito(idmovie_id=movie,idusuario_id=user.id)
+    return redirect('vista_favoritos')    
+
+def favorita_pelicula(request, movie):
+    user = request.user
+    favoritos = Favorito.objects.filter(idusuario_id=user.id, idmovie_id=movie)
+
+    if favoritos.exists():
+        favoritos.delete()
+    else:
+        favorito = Favorito(idmovie_id=movie, idusuario_id=user.id)
         favorito.save()
-        return render(request,'Home/home.html',{'movie':movie})
-   """ 
+
+    return redirect('home')
+
+def favorita_pelicula_vista(request, movie):
+    user = request.user
+    favoritos = Favorito.objects.filter(idusuario_id=user.id, idmovie_id=movie)
+
+    if favoritos.exists():
+        favoritos.delete()
+    else:
+        favorito = Favorito(idmovie_id=movie, idusuario_id=user.id)
+        favorito.save()
+
+    return redirect('views_movie', movie=movie)    
         
 
 def register(request):
@@ -124,18 +159,17 @@ def register(request):
         apellido = request.POST['apellido']
         correo = request.POST['correo']
 
-        # Crear un nuevo objeto de usuario
+
         user = User.objects.create_user(username=username, password=password)
 
-        # Actualizar los campos personalizados del usuario
         user.first_name = nombre
         user.last_name = apellido
         user.email = correo
 
-        # Guardar el usuario en la base de datos
+
         user.save()
 
-        # Redireccionar a la página de inicio de sesión
+
         return redirect('/')
 
     return render(request,'registration/register.html')
