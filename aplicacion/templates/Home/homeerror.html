@@ -1,3 +1,5 @@
+{% load static %}
+<link type='text/css' href='{% static "css/home_error.css" %}' rel='stylesheet'/>
 <h3>bienvenido</h3>
 <form action="{% url 'buscar_pelicula' %}" method="post">
     {% csrf_token %}
