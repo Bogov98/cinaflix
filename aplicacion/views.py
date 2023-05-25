@@ -148,7 +148,7 @@ def views_movie(request, movie):
     user_similarity_df, movies_similarity_df, user_movie_df = get_data_model()
     ids_recomended_movies = top_movies(movie.id,movies_similarity_df)
     print(ids_recomended_movies)
-    movies_recomended = Movie.objects.filter(pk__in=list(ids_recomended_movies)[:15])
+    movies_recomended = Movie.objects.filter(pk__in=list(ids_recomended_movies)[1:3])
 
     try:
         visto=True
@@ -174,8 +174,6 @@ def views_movie(request, movie):
         datos={         
             'movie': movie,
             'favoritos':favoritos,
-
-            'movie': movie,
             'movies_recomended': movies_recomended
 
             

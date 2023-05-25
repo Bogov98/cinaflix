@@ -11,6 +11,8 @@
 <body>
   <header>
     <h1>{{movie.title}}</h1>
+    <a href="{% url 'home' %}" class="button button-primary">Ir a Menu</a>
+
   </header>
 
   <main>
@@ -78,6 +80,7 @@
     
     <button type="submit" class="califi">Calificar</button>
   </form>
+  
   {% endif %}
 
   {% if comen %}
