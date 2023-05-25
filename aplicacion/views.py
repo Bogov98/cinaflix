@@ -18,6 +18,7 @@ import numpy as np
 
 def top_movies(movie_id, movies_similarity_df):
     if movie_id in movies_similarity_df.columns:
+        # Exclude the first movie which is the same movie
         return movies_similarity_df[movie_id].sort_values(ascending=False).index[1:4]  
     else:
         return []
