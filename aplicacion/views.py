@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout 
 from .forms import CustomUserCreationForm
 from django.contrib.auth.models import User
+from django.contrib import messages
 from .models import Movie
 from .models import Vista
 from .models import Comentario
@@ -23,8 +24,13 @@ def top_movies(movie_id, movies_similarity_df):
 
 
 def top_users(user, user_similarity_df):
+    # Comprobar si el usuario existe en el DataFrame
+    if user not in user_similarity_df.index:
+        return []
+        
     similar_users_list = []
     similar_users = user_similarity_df.sort_values(by=user, ascending=False)
+    
     for rank, similar_user in enumerate(similar_users, start=1):
         # Excluir al propio usuario objetivo
         if similar_user == user:
@@ -33,9 +39,14 @@ def top_users(user, user_similarity_df):
         similarity_score = user_similarity_df.loc[user, similar_user]
         if similarity_score > 0.3:
             similar_users_list.append(similar_user)
+            
     return similar_users_list
 
 def get_unseen_movies(target_user, similar_users, pivote2):
+    # Comprobar si el usuario existe en el DataFrame
+    if target_user not in pivote2.index:
+        return set()
+        
     unseen_movies = set()
     target_user_movies = set(pivote2.columns[pivote2.loc[target_user] == 1])
 
@@ -45,11 +56,18 @@ def get_unseen_movies(target_user, similar_users, pivote2):
 
     return unseen_movies
 
+
 def recommend_movies(target_user, user_similarity_df, user_movie_df):
     similar_users = top_users(target_user, user_similarity_df)
     unseen_movies = get_unseen_movies(target_user, similar_users, user_movie_df)
 
+    # Si no se encontraron películas para recomendar, devolver una lista vacía
+    if len(unseen_movies) == 0:
+        unseen_movies = []
+
     return unseen_movies
+
+
     
 def get_data_model():
     movies = Movie.objects.values()
@@ -78,33 +96,19 @@ def get_data_model():
 
 
 # Create your views here.
-"""@login_required
-def home(request):
-    user = request.user
-    movies = Movie.objects.all()[:10]
-    favoritos = Favorito.objects.filter(idusuario_id=user.id).values_list('idmovie_id', flat=True)# flat minimiza la busqeuda extrayendo solo el valor en vez de una lista
-    movie=Movie.objects.all()[:10]
-
-    user_similarity_df, movies_similarity_df, user_movie_df = get_data_model()
-    ids_recomended_movies = recommend_movies(user.id, user_similarity_df, user_movie_df)
-    movies_recomended = Movie.objects.filter(pk__in=list(ids_recomended_movies)[:15])
-    print(len(movies_recomended))
-    print(ids_recomended_movies)
-    datos={
-        'user':user,
-        'movie':movie,
-        'movies_recomended': movies_recomended,
-        'favoritos': favoritos,
-    }
-
-    return render(request,'Home/home.html', datos)"""
 @login_required
 def home(request):
     user=request.user
     movie=Movie.objects.all()[:10]
-    favoritos = Favorito.objects.filter(idusuario_id=user.id).values_list('idmovie_id', flat=True)# flat minimiza la busqeuda extrayendo solo el valor en vez de una lista
+    favoritos = Favorito.objects.filter(idusuario_id=user.id).values_list('idmovie_id', flat=True)
     user_similarity_df, movies_similarity_df, user_movie_df = get_data_model()
     ids_recomended_movies = recommend_movies(user.id, user_similarity_df, user_movie_df)
+    
+    if ids_recomended_movies:
+        movies_recomended = Movie.objects.filter(pk__in=list(ids_recomended_movies)[:15])
+    else:
+        messages.info(request, 'Aún no hay recomendaciones disponibles para ti.')
+        movies_recomended = []
     movies_recomended = Movie.objects.filter(pk__in=list(ids_recomended_movies)[:15])
     adventure_movies = Movie.objects.filter(generos='adventure')
     random_adventure = random.sample(list(adventure_movies), 15)#devuelve 15 peliculas en orden aleatorio
